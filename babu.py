@@ -1,9 +1,9 @@
-import pandas as pd
+import sys
+print(sys.path)
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtGui import QPalette, QColor
 from PyQt5.QtCore import Qt
-import sys
 import pandas as pd
 import io
 import requests
@@ -262,7 +262,7 @@ class Window2(QMainWindow):                           # <===
 
 
     #def upload_activated(self):
-        #self.window1.button_upload.setEnabled(True)
+     #   self.window1.button_upload.setEnabled(True)
          
 
 class MyWindow(QMainWindow):
@@ -608,7 +608,7 @@ class MyWindow(QMainWindow):
         self.button_checkdata.clicked.connect(self.passinInformation)
 
 
-        self.combobox_dna = QtWidgets.QComboBox(self)
+        '''self.combobox_dna = QtWidgets.QComboBox(self)
         dna = ['SQK-LSK109-XL','SQK-LSK110','SQK-LSK109','SQK-16S024','SQK-LRK001',
         'SQK-RBK004','SQK-PBK004','SQK-RAB204','SQK-RPB004','SQK-PSK004','SQK-RAD004']
         self.combobox_dna.addItems(dna)
@@ -642,7 +642,7 @@ class MyWindow(QMainWindow):
         'SQK-CS9109','SQK-PCB109','SQK-PCS109','SQK-DCS109','SQK-PBK004','SQK-RBK004',
         'SQK-RAB204','SQK-RPB004']
         self.combobox_multi_yes.addItems(mutiplexing_yes)
-        self.combobox_multi_yes.move(160, 110)
+        self.combobox_multi_yes.move(160, 110)'''
 
 
         self.button_upload = QtWidgets.QPushButton(self)
@@ -758,16 +758,16 @@ class MyWindow(QMainWindow):
         #self.button_reset.move(0, 110)
         #self.button_reset.clicked.connect(self.reset)
 
-        self.tablewdiget = QtWidgets.QTableWidget(20,2,self)
-        self.tablewdiget.move(560, 20)
+        self.tablewidget = QtWidgets.QTableWidget(95,1,self)
+        #self.tablewidget.move(560, 20)
+        self.tablewidget.setGeometry(QtCore.QRect(570,20,140,560))
         #self.tablewdiget.setItem(1,1,)
 
-        self.nullsummenlabel = QtWidgets.QLabel(self)
-        self.nullsummenlabel.move(0, 0)
-        self.nullsummenlabel.setText('0')
+        
 
         self.list_kits = QtWidgets.QComboBox(self)
-        kitliste = ['SQK-PCB109','SQK-RNA002','SQK-PCS109','SQK-DCS109','']
+        kitliste = ['SQK-PCB109','SQK-RNA002','SQK-PCS109','SQK-DCS109','SQK-CS9109','SQK-LSK109','SQK-LSK109-XL','SQK-16S024','SQK-LSK110',
+        'SQK-LRK001','SQK-RBK004','SQK-PBK004','SQK-RAB204','SQK-RPB004','SQK-PSK004','SQK-RAD004']
         self.list_kits.addItems(kitliste)
         self.list_kits.move(60,140)
 
@@ -1010,6 +1010,11 @@ class MyWindow(QMainWindow):
         self.window2.displayInfo()
 
     def anwenden(self, state):
+        kitliste = ['SQK-PCB109','SQK-RNA002','SQK-PCS109','SQK-DCS109','SQK-CS9109','SQK-LSK109','SQK-LSK109-XL','SQK-16S024','SQK-LSK110',
+        'SQK-LRK001','SQK-RBK004','SQK-PBK004','SQK-RAB204','SQK-RPB004','SQK-PSK004','SQK-RAD004']
+        self.list_kits.clear()
+        self.list_kits.addItems(kitliste)
+        
         trigger1 = 0
         trigger2 = 0
         trigger3 = 0
@@ -1025,14 +1030,13 @@ class MyWindow(QMainWindow):
         
         
         dna = self.dna_checkbox.checkState()  #  0 for un-checked state, 2 for checked state
-        print(dna)
         if dna == 2:
             trigger1 = 'DNA'
-            self.nullsummenlabel.setText('hi')
+            self.nullsummenlabel.setText('dna')
+            
         
         rna = self.rna_checkbox.checkState()
-        print(rna)
-        if dna == 2:
+        if rna == 2:
             trigger1 = 'RNA'
 
         pcr = self.pcr_checkbox.checkState()
@@ -1056,13 +1060,13 @@ class MyWindow(QMainWindow):
         
         url="https://raw.githubusercontent.com/t3ddezz/kitslist/main/Kits_real1.tsv"
         re=requests.get(url).content
-        sequencing=pd.read_csv(io.StringIO(re.decode('utf-8')),sep='\t',index_col=False)
+        sequencing=pd.read_csv(io.StringIO(re.decode('utf-8')),sep='\t',index_col=False,)#na_filter=False)
         e = len(sequencing.columns)
         sequencing.insert(e,'liste2',0,True)
         sequencing.insert(e,'liste1',0,True)
-        
+
         if trigger1 == 'DNA' or trigger1 == 'RNA':
-  
+            
             z = trigger1
             if trigger2 == 'PCR' or trigger2 == 'PCR_Free':
                 x = trigger2
@@ -1072,6 +1076,51 @@ class MyWindow(QMainWindow):
             else:
                 if trigger3 == 'yes' or trigger3 == 'no':
                     x = trigger3
+                
+                '''else:
+                    c = 0
+                    a = 0
+                    d = len(sequencing)
+                     
+                    while True:
+                        if sequencing.loc[a,z] == sequencing.loc[a,z]:
+                            c = sequencing.loc[a,z]
+                            sequencing.loc[[a],['liste1']] = c
+                            a = a + 1
+                            print(c)
+                        
+                        else:
+                            a = a + 1
+                        if a == d:
+                            a = 0
+                            c = 0
+
+                            break
+
+                        kitlist = []
+                    while True:
+                        if sequencing.loc[a,'liste1']!= 0:
+                            c = sequencing.loc[a,'liste1']
+                            kitlist.append(c)
+    
+    
+    
+                            a = a + 1
+                        else:
+                            a = a + 1 
+    
+                        if a == d:
+                            break 
+                    print(kitlist)
+                    #kitlist = sequencing['liste1'].tolist()
+                    
+                    
+                    kitlist = sequencing[z].tolist()
+                    
+                    print(kitlist)
+                    self.list_kits.clear()
+                    self.list_kits.addItems(kitlist)'''
+
         else:
   
             if trigger2 == 'PCR' or trigger2 == 'PCR_Free':
@@ -1082,6 +1131,13 @@ class MyWindow(QMainWindow):
             else:
                 if trigger3 == 'yes' or trigger3 == 'no':
                     z = trigger3
+                    
+                
+                '''else:
+                    self.list_kits.clear()
+                    self.list_kits.addItems(kitliste)'''
+                    
+
 
         if z and y and x !=0:
           a = 0
@@ -1119,7 +1175,7 @@ class MyWindow(QMainWindow):
                     c = 0
 
                     break 
-          print(sequencing)
+          
           while True:
               if sequencing.loc[a,'liste1'] == sequencing.loc[b,y]:
                     c = sequencing.loc[b,y]
@@ -1140,23 +1196,22 @@ class MyWindow(QMainWindow):
                     c = 0
                     break      
 
-          print(sequencing)
+          
           liste4 = []
           while True:
                 if sequencing.loc[a,'liste2']!= 0:
-                    c = sequencing.loc[a,'liste2']
-                    liste4.append(c)
-    
-    
-    
-                    a = a + 1
+                  c = sequencing.loc[a,'liste2']
+                  liste4.append(c)
+                  a = a + 1
                 else:
                     a = a + 1 
     
                 if a == d:
                     break 
+          print(liste4)
+          self.list_kits.clear()
+          self.list_kits.addItems(liste4)
 
-            #print(liste4)
 
         else:
             if z and x !=0:
@@ -1165,10 +1220,10 @@ class MyWindow(QMainWindow):
                 c = 0
                 d = len('liste1')
                 e = len(sequencing.columns)
-                f = len(sequencing)
+                kitlist = []
     
-                while True:
-                    if sequencing.loc[a,'liste1']== sequencing.loc[b,y]:
+                '''while True:
+                    if sequencing.loc[a,'liste1'] == sequencing.loc[b,y]:
                         c = sequencing.loc[b,y]
                         sequencing.loc[[a], ['liste2']] = c
     
@@ -1182,15 +1237,97 @@ class MyWindow(QMainWindow):
                             a = a + 1
                             b = 0
                     if a == d:
-                        break  
-                kitlist = sequencing[:,'liste2'].tolist()
-                print(kitlist)        
+                        break''' 
+                while True:
+                
+                    if sequencing.loc[a,z] == sequencing.loc[b,x]:
+                        c = sequencing.loc[b,x]
+                        sequencing.loc[[a], ['liste1']] = c
+    
+    
+    
+                        a = a + 1
+                        b = 0
+    
+
+                    else: 
+                        b = b + 1
+                        if b == 12:
+                            a = a + 1
+                            b = 0
+    
+  
+                    if a == d:
+                        a = 0
+                        b = 0
+                        c = 0
+
+                        break 
+
+                while True:
+                        if sequencing.loc[a,'liste1']!= 0:
+                            c = sequencing.loc[a,'liste1']
+                            kitlist.append(c)
+    
+    
+    
+                            a = a + 1
+                        else:
+                            a = a + 1 
+    
+                        if a == d:
+                            break 
+                print(kitlist)
+                '''kitlist = sequencing[:,'liste2'].tolist()'''
+                self.list_kits.clear()
+                self.list_kits.addItems(kitlist)        
             else:
                 if z != 0:
-                    kitlist = sequencing[z].tolist()
+                    c = 0
+                    a = 0
+                    d = len(sequencing)
+                    kitlist = []
+                    while True:
+                        if sequencing.loc[a,z] == sequencing.loc[a,z]:
+                            c = sequencing.loc[a,z]
+                            sequencing.loc[[a],['liste1']] = c
+                            a = a + 1
+                            
+                        
+                        else:
+                            a = a + 1
+                        if a == d:
+                            a = 0
+                            c = 0
+
+                            break
+                    
+                    while True:
+                        if sequencing.loc[a,'liste1']!= 0:
+                            c = sequencing.loc[a,'liste1']
+                            kitlist.append(c)
+    
+    
+    
+                            a = a + 1
+                        else:
+                            a = a + 1 
+    
+                        if a == d:
+                            break 
                     print(kitlist)
+                    
+                    '''kitlist = sequencing[z].tolist()
+                    print(kitlist)'''
+                    self.list_kits.clear()
+                    self.list_kits.addItems(kitlist)
         d = len(sequencing) 
         a = 0
+
+        del sequencing['liste1']
+        del sequencing['liste2']
+        kitlist = 0
+        liste4 = 0
 
 
         
