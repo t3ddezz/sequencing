@@ -283,15 +283,16 @@ class MyWindow(QMainWindow):
         
 
         self.label_kit = QtWidgets.QLabel(self)
-        self.label_kit.setText('choose one kit')
+        self.label_kit.setText('choose barcode')
         self.label_kit.move(45, 170)
 
         self.combobox_kit = QtWidgets.QComboBox(self)
-        kits = ['Select kit','LSK-109','110','RPB004']
+        kits = ['no barcode','EXP-PBC096','EXP-PBC001','EXP-NBD114','EXP_NBD104','EXP-NBD196']
         self.combobox_kit.addItems(kits)
         self.combobox_kit.move(40,190)
-        self.combobox_kit.view().setRowHidden(0, True)
-        self.combobox_kit.activated.connect(self.showComboMessage)
+        self.combobox_kit.currentTextChanged.connect(self.combchanged2)
+        #self.combobox_kit.view().setRowHidden(0, True)
+        #self.combobox_kit.activated.connect(self.showComboMessage)
         
         self.qlabel = QtWidgets.QLabel(self)
         self.qlabel.setText('')
@@ -655,6 +656,12 @@ class MyWindow(QMainWindow):
         self.checkbox.stateChanged.connect(self.clickbox)
         self.checkbox.move(100, 255)
         self.checkbox.setDisabled(True)
+
+        self.checkbox_95 = QtWidgets.QCheckBox("95-sample names",self)
+        self.checkbox_95.adjustSize()
+        self.checkbox_95.stateChanged.connect(self.clickbox2)
+        self.checkbox_95.move(120, 280)
+        self.checkbox_95.setDisabled(True)
         #self.checkbox.setHidden(True)
 
 
@@ -758,19 +765,25 @@ class MyWindow(QMainWindow):
         #self.button_reset.move(0, 110)
         #self.button_reset.clicked.connect(self.reset)
 
-        self.tablewidget = QtWidgets.QTableWidget(95,1,self)
+        self.tablewidget = QtWidgets.QTableWidget(96,1,self)
         #self.tablewidget.move(560, 20)
         self.tablewidget.setGeometry(QtCore.QRect(570,20,140,560))
+        self.tablewidget.setHorizontalHeaderLabels(["samples"])
+        self.tablewidget.setHidden(True)
         #self.tablewdiget.setItem(1,1,)
 
         
 
         self.list_kits = QtWidgets.QComboBox(self)
-        kitliste = ['SQK-PCB109','SQK-RNA002','SQK-PCS109','SQK-DCS109','SQK-CS9109','SQK-LSK109','SQK-LSK109-XL','SQK-16S024','SQK-LSK110',
+        kitliste = ['Select Kit','SQK-PCB109','SQK-RNA002','SQK-PCS109','SQK-DCS109','SQK-CS9109','SQK-LSK109','SQK-LSK109-XL','SQK-16S024','SQK-LSK110',
         'SQK-LRK001','SQK-RBK004','SQK-PBK004','SQK-RAB204','SQK-RPB004','SQK-PSK004','SQK-RAD004']
         self.list_kits.addItems(kitliste)
         self.list_kits.move(60,140)
+        self.list_kits.currentTextChanged.connect(self.combchanged)
+        
 
+
+        
         
 
 
@@ -782,14 +795,62 @@ class MyWindow(QMainWindow):
         #self.yes_checkbox.setChecked(False)
         #self.no_checkbox.setChecked(False)
 
+    def combchanged2(self, value):
+        n = value
+        if n == 'EXP-PBC096' or n == 'EXP-NBD196':
+            self.radiobutton_yes.setChecked(True)
+            self.checkbox_95.setChecked(True)
+    
+    def combchanged(self, value):
+        n = value
+
+        kits = ['no barcode','EXP-PBC096','EXP-PBC001','EXP-NBD114','EXP_NBD104','EXP-NBD196']        
+        self.combobox_kit.clear()
+        self.combobox_kit.addItems(kits)
+
+
+        url="https://raw.githubusercontent.com/t3ddezz/kitslist/main/Barcodelist_real1.tsv"
+        re=requests.get(url).content
+        barcoding = pd.read_csv(io.StringIO(re.decode('utf-8')), sep='\t', index_col=False, header=None)
+        barcoding = barcoding.fillna(0)
+        
+        d = len(barcoding.columns)
+        a = 0
+        barcoding_list = ['no barcode','EXP-PBC001','EXP-PBC096','EXP-NBD114','EXP-NBD104','EXP-NBD194']
+        while True:
+            if  barcoding.loc[0,a] == n:
+                barcoding_list.clear()
+                barcoding_list = barcoding[a].tolist()
+                del barcoding_list[0]
+                barlist = ['no barcode']
+                k = len(barcoding)
+                k = k - 1
+            
+                for i in range(0,k):
+                    if barcoding_list[i] != 0:
+                        c = barcoding_list[i]
+                        barlist.append(c)
+
+                
+                self.combobox_kit.clear()
+                self.combobox_kit.addItems(barlist)
+                break
     
 
+            else: 
+                a = a + 1
 
+            if a == d:
+                a = 0
+                self.combobox_kit.clear()
+                self.combobox_kit.addItems(barcoding_list)
+                break
+        
+        
     def clickbox_dna(self, state):
         if state == QtCore.Qt.Checked:
             self.rna_checkbox.setChecked(False)
     
-     
     def clickbox_rna(self, state):
         if state == QtCore.Qt.Checked:
             self.dna_checkbox.setChecked(False)
@@ -828,9 +889,9 @@ class MyWindow(QMainWindow):
         self.qlabel3.setText(text)
 
    
-    def showComboMessage(self, index=-1, enable=False):
+    '''def showComboMessage(self, index=-1, enable=False):
         if index:
-            self.combobox_kit.model().item(0).setEnabled(enable)
+            self.combobox_kit.model().item(0).setEnabled(enable)'''
    
    
     def showComboMessage2(self, index=-1, enable=False):
@@ -852,7 +913,9 @@ class MyWindow(QMainWindow):
         self.label_barcode_yes_no.setText('no')
         self.checkbox.setChecked(False)
         self.checkbox.setDisabled(True)
-        #self.checkbox.setHidden(True)
+        self.checkbox_95.setChecked(False)
+        self.checkbox_95.setDisabled(True)
+        self.tablewidget.setHidden(True)
         #self.textedit.setDisabled(False)
         #self.textedit.setHidden(False)
         self.label2.setHidden(True)
@@ -877,12 +940,12 @@ class MyWindow(QMainWindow):
         self.lineedit10.setHidden(True)
         self.lineedit11.setHidden(True)
         self.lineedit12.setHidden(True)
-        
-    
+
+
     #def uplaod(self):
         #self.button_upload.setEnabled(True)
-    
-    
+
+
     def radioclicked_yes(self):
 
         self.window2.unhide2()
@@ -890,6 +953,7 @@ class MyWindow(QMainWindow):
         self.combobox_bar.setDisabled(False)
         self.label_barcode_yes_no.setText('yes')
         self.checkbox.setDisabled(False)
+        self.checkbox_95.setDisabled(False)
         #self.checkbox.setHidden(False)
         #self.textedit.setDisabled(True)
         #self.textedit.setHidden(True)
@@ -919,6 +983,8 @@ class MyWindow(QMainWindow):
     
     def clickbox(self, state):
         if state == QtCore.Qt.Checked:
+            self.tablewidget.setHidden(True)
+            self.checkbox_95.setChecked(False)
             self.label13.setHidden(False)
             self.lineedit13.setHidden(False)
             self.label14.setHidden(False)
@@ -971,7 +1037,12 @@ class MyWindow(QMainWindow):
             self.lineedit24.setHidden(True)
             self.window2.hide()
 
-   
+    def clickbox2(self,state):
+        if state == QtCore.Qt.Checked:
+            self.checkbox.setChecked(False)
+            self.tablewidget.setHidden(False)
+
+
     def passinInformation(self):
         
         self.window2.input_flowcell.setText(self.qlabel3.text())
@@ -1009,6 +1080,7 @@ class MyWindow(QMainWindow):
 
         self.window2.displayInfo()
 
+
     def anwenden(self, state):
         kitliste = ['SQK-PCB109','SQK-RNA002','SQK-PCS109','SQK-DCS109','SQK-CS9109','SQK-LSK109','SQK-LSK109-XL','SQK-16S024','SQK-LSK110',
         'SQK-LRK001','SQK-RBK004','SQK-PBK004','SQK-RAB204','SQK-RPB004','SQK-PSK004','SQK-RAD004']
@@ -1032,9 +1104,7 @@ class MyWindow(QMainWindow):
         dna = self.dna_checkbox.checkState()  #  0 for un-checked state, 2 for checked state
         if dna == 2:
             trigger1 = 'DNA'
-            self.nullsummenlabel.setText('dna')
             
-        
         rna = self.rna_checkbox.checkState()
         if rna == 2:
             trigger1 = 'RNA'
@@ -1197,20 +1267,20 @@ class MyWindow(QMainWindow):
                     break      
 
           
-          liste4 = []
+          kitlist = []
           while True:
                 if sequencing.loc[a,'liste2']!= 0:
                   c = sequencing.loc[a,'liste2']
-                  liste4.append(c)
+                  kitlist.append(c)
                   a = a + 1
                 else:
                     a = a + 1 
     
                 if a == d:
                     break 
-          print(liste4)
+          print(kitlist)
           self.list_kits.clear()
-          self.list_kits.addItems(liste4)
+          self.list_kits.addItems(kitlist)
 
 
         else:
@@ -1327,33 +1397,13 @@ class MyWindow(QMainWindow):
         del sequencing['liste1']
         del sequencing['liste2']
         kitlist = 0
-        liste4 = 0
-
-
         
 
-
-        
-            
-    
-  
-    
 
     '''def window2(self):                                             # <===
         self.w = Window2()
         self.w.show()'''
         
-
-        
-    
-
-
-
-
-        
-        
-       
-            
 
 def window():
     app = QApplication(sys.argv)
