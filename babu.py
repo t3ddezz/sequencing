@@ -287,7 +287,7 @@ class MyWindow(QMainWindow):
         self.label_kit.move(45, 170)
 
         self.combobox_kit = QtWidgets.QComboBox(self)
-        kits = ['no barcode','EXP-PBC096','EXP-PBC001','EXP-NBD114','EXP_NBD104','EXP-NBD196']
+        kits = ['no barcode','EXP-PBC096','EXP-PBC001','EXP-NBD114','EXP-NBD104','EXP-NBD196']
         self.combobox_kit.addItems(kits)
         self.combobox_kit.move(40,190)
         self.combobox_kit.currentTextChanged.connect(self.combchanged2)
@@ -649,7 +649,8 @@ class MyWindow(QMainWindow):
         self.button_upload = QtWidgets.QPushButton(self)
         self.button_upload.setText('upload')
         self.button_upload.move(40, 560)
-        self.button_upload.setEnabled(False)
+        #self.button_upload.setEnabled(False)
+        self.button_upload.clicked.connect(self.upload)
     
         self.checkbox = QtWidgets.QCheckBox("24-sample names",self)
         self.checkbox.adjustSize()
@@ -657,7 +658,7 @@ class MyWindow(QMainWindow):
         self.checkbox.move(100, 255)
         self.checkbox.setDisabled(True)
 
-        self.checkbox_95 = QtWidgets.QCheckBox("95-sample names",self)
+        self.checkbox_95 = QtWidgets.QCheckBox("96-sample names",self)
         self.checkbox_95.adjustSize()
         self.checkbox_95.stateChanged.connect(self.clickbox2)
         self.checkbox_95.move(120, 280)
@@ -787,6 +788,15 @@ class MyWindow(QMainWindow):
         
 
 
+    def upload(self):
+        print('coconut')
+        lineedit01 = self.lineedit1.text()
+        barcodingkit = self.combobox_kit.currentText()
+        print(lineedit01)
+        print(barcodingkit)
+        
+    # 01100001 01101110 01101111 01110101 01101011
+
     #def reset(self):
      #   self.rna_checkbox.setChecked(False)
       #  self.dna_checkbox.setChecked(False)
@@ -797,14 +807,98 @@ class MyWindow(QMainWindow):
 
     def combchanged2(self, value):
         n = value
-        if n == 'EXP-PBC096' or n == 'EXP-NBD196':
+        if n == 'no barcode':
+            self.radiobutton_no.setChecked(True)
+        if n == 'EXP-NBD196' or n == 'EXP-PBC096':
             self.radiobutton_yes.setChecked(True)
             self.checkbox_95.setChecked(True)
+            self.tablewidget.setHidden(False)
+            self.label1.setHidden(True)
+            self.label2.setHidden(True)
+            self.label3.setHidden(True)
+            self.label4.setHidden(True)
+            self.label5.setHidden(True)
+            self.label6.setHidden(True)
+            self.label7.setHidden(True)
+            self.label8.setHidden(True)
+            self.label9.setHidden(True)
+            self.label10.setHidden(True)
+            self.label11.setHidden(True)
+            self.label12.setHidden(True)
+            self.lineedit1.setHidden(True)
+            self.lineedit2.setHidden(True)
+            self.lineedit3.setHidden(True)
+            self.lineedit4.setHidden(True)
+            self.lineedit5.setHidden(True)
+            self.lineedit6.setHidden(True)
+            self.lineedit7.setHidden(True)
+            self.lineedit8.setHidden(True)
+            self.lineedit9.setHidden(True)
+            self.lineedit10.setHidden(True)
+            self.lineedit11.setHidden(True)
+            self.lineedit12.setHidden(True)
+        if n == 'EXP-PBC001' or n == 'EXP-NBD104':
+            self.radiobutton_yes.setChecked(True)
+            self.checkbox_95.setChecked(False)
+            self.checkbox.setChecked(False)
+            self.label1.setHidden(False)
+            self.label2.setHidden(False)
+            self.label3.setHidden(False)
+            self.label4.setHidden(False)
+            self.label5.setHidden(False)
+            self.label6.setHidden(False)
+            self.label7.setHidden(False)
+            self.label8.setHidden(False)
+            self.label9.setHidden(False)
+            self.label10.setHidden(False)
+            self.label11.setHidden(False)
+            self.label12.setHidden(False)
+            self.lineedit1.setHidden(False)
+            self.lineedit2.setHidden(False)
+            self.lineedit3.setHidden(False)
+            self.lineedit4.setHidden(False)
+            self.lineedit5.setHidden(False)
+            self.lineedit6.setHidden(False)
+            self.lineedit7.setHidden(False)
+            self.lineedit8.setHidden(False)
+            self.lineedit9.setHidden(False)
+            self.lineedit10.setHidden(False)
+            self.lineedit11.setHidden(False)
+            self.lineedit12.setHidden(False)
+        if n == 'EXP-NBD114':    
+            self.radiobutton_yes.setChecked(True)
+            self.checkbox.setChecked(True)
+            self.checkbox_95.setChecked(False)
+            self.label1.setHidden(True)
+            self.label2.setHidden(True)
+            self.label3.setHidden(True)
+            self.label4.setHidden(True)
+            self.label5.setHidden(True)
+            self.label6.setHidden(True)
+            self.label7.setHidden(True)
+            self.label8.setHidden(True)
+            self.label9.setHidden(True)
+            self.label10.setHidden(True)
+            self.label11.setHidden(True)
+            self.label12.setHidden(True)
+            self.lineedit1.setHidden(True)
+            self.lineedit2.setHidden(True)
+            self.lineedit3.setHidden(True)
+            self.lineedit4.setHidden(True)
+            self.lineedit5.setHidden(True)
+            self.lineedit6.setHidden(True)
+            self.lineedit7.setHidden(True)
+            self.lineedit8.setHidden(True)
+            self.lineedit9.setHidden(True)
+            self.lineedit10.setHidden(True)
+            self.lineedit11.setHidden(True)
+            self.lineedit12.setHidden(True)
+
     
     def combchanged(self, value):
         n = value
 
-        kits = ['no barcode','EXP-PBC096','EXP-PBC001','EXP-NBD114','EXP_NBD104','EXP-NBD196']        
+        kits = ['no barcode','EXP-PBC096','EXP-PBC001','EXP-NBD114','EXP-NBD104','EXP-NBD196']        
         self.combobox_kit.clear()
         self.combobox_kit.addItems(kits)
 
@@ -816,7 +910,7 @@ class MyWindow(QMainWindow):
         
         d = len(barcoding.columns)
         a = 0
-        barcoding_list = ['no barcode','EXP-PBC001','EXP-PBC096','EXP-NBD114','EXP-NBD104','EXP-NBD194']
+        barcoding_list = ['no barcode','EXP-PBC001','EXP-PBC096','EXP-NBD114','EXP-NBD104','EXP-NBD196']
         while True:
             if  barcoding.loc[0,a] == n:
                 barcoding_list.clear()
@@ -918,6 +1012,7 @@ class MyWindow(QMainWindow):
         self.tablewidget.setHidden(True)
         #self.textedit.setDisabled(False)
         #self.textedit.setHidden(False)
+        self.label1.setHidden(False)
         self.label2.setHidden(True)
         self.label3.setHidden(True)
         self.label4.setHidden(True)
@@ -929,6 +1024,7 @@ class MyWindow(QMainWindow):
         self.label10.setHidden(True)
         self.label11.setHidden(True)
         self.label12.setHidden(True)
+        self.lineedit1.setHidden(False)
         self.lineedit2.setHidden(True)
         self.lineedit3.setHidden(True)
         self.lineedit4.setHidden(True)
@@ -957,6 +1053,7 @@ class MyWindow(QMainWindow):
         #self.checkbox.setHidden(False)
         #self.textedit.setDisabled(True)
         #self.textedit.setHidden(True)
+        self.label1.setHidden(False)
         self.label2.setHidden(False)
         self.label3.setHidden(False)
         self.label4.setHidden(False)
@@ -968,6 +1065,7 @@ class MyWindow(QMainWindow):
         self.label10.setHidden(False)
         self.label11.setHidden(False)
         self.label12.setHidden(False)
+        self.lineedit1.setHidden(False)
         self.lineedit2.setHidden(False)
         self.lineedit3.setHidden(False)
         self.lineedit4.setHidden(False)
@@ -1041,6 +1139,56 @@ class MyWindow(QMainWindow):
         if state == QtCore.Qt.Checked:
             self.checkbox.setChecked(False)
             self.tablewidget.setHidden(False)
+            self.label1.setHidden(True)
+            self.label2.setHidden(True)
+            self.label3.setHidden(True)
+            self.label4.setHidden(True)
+            self.label5.setHidden(True)
+            self.label6.setHidden(True)
+            self.label7.setHidden(True)
+            self.label8.setHidden(True)
+            self.label9.setHidden(True)
+            self.label10.setHidden(True)
+            self.label11.setHidden(True)
+            self.label12.setHidden(True)
+            self.lineedit1.setHidden(True)
+            self.lineedit2.setHidden(True)
+            self.lineedit3.setHidden(True)
+            self.lineedit4.setHidden(True)
+            self.lineedit5.setHidden(True)
+            self.lineedit6.setHidden(True)
+            self.lineedit7.setHidden(True)
+            self.lineedit8.setHidden(True)
+            self.lineedit9.setHidden(True)
+            self.lineedit10.setHidden(True)
+            self.lineedit11.setHidden(True)
+            self.lineedit12.setHidden(True)
+        else:
+            self.tablewidget.setHidden(True)
+            self.label1.setHidden(False)
+            self.label2.setHidden(False)
+            self.label3.setHidden(False)
+            self.label4.setHidden(False)
+            self.label5.setHidden(False)
+            self.label6.setHidden(False)
+            self.label7.setHidden(False)
+            self.label8.setHidden(False)
+            self.label9.setHidden(False)
+            self.label10.setHidden(False)
+            self.label11.setHidden(False)
+            self.label12.setHidden(False)
+            self.lineedit1.setHidden(False)
+            self.lineedit2.setHidden(False)
+            self.lineedit3.setHidden(False)
+            self.lineedit4.setHidden(False)
+            self.lineedit5.setHidden(False)
+            self.lineedit6.setHidden(False)
+            self.lineedit7.setHidden(False)
+            self.lineedit8.setHidden(False)
+            self.lineedit9.setHidden(False)
+            self.lineedit10.setHidden(False)
+            self.lineedit11.setHidden(False)
+            self.lineedit12.setHidden(False)
 
 
     def passinInformation(self):
@@ -1407,29 +1555,47 @@ class MyWindow(QMainWindow):
 
 def window():
     app = QApplication(sys.argv)
-    win = MyWindow()
-    win.show()
-    sys.exit(app.exec_())
+    
+    '''app.setStyle('Fusion')
+    palette = QtGui.QPalette()
+    palette.setColor(QtGui.QPalette.Window, QtGui.QColor(53,53,53))
+    palette.setColor(QtGui.QPalette.WindowText, QtCore.Qt.white)
+    palette.setColor(QtGui.QPalette.Base, QtGui.QColor(15,15,15))
+    palette.setColor(QtGui.QPalette.AlternateBase, QtGui.QColor(53,53,53))
+    palette.setColor(QtGui.QPalette.ToolTipBase, QtCore.Qt.white)
+    palette.setColor(QtGui.QPalette.ToolTipText, QtCore.Qt.white)
+    palette.setColor(QtGui.QPalette.Text, QtCore.Qt.white)
+    palette.setColor(QtGui.QPalette.Button, QtGui.QColor(53,53,53))
+    palette.setColor(QtGui.QPalette.ButtonText, QtCore.Qt.white)
+    palette.setColor(QtGui.QPalette.BrightText, QtCore.Qt.red)
+         
+    palette.setColor(QtGui.QPalette.Highlight, QtGui.QColor(142,45,197).lighter())
+    palette.setColor(QtGui.QPalette.HighlightedText, QtCore.Qt.black)
+    app.setPalette(palette)'''
 
-'''app.setStyle('Fusion')
-    dark_palette = QtWidgets.QtPalette
 
-    dark_palette.setColor(QPalette.Window, QColor(53, 53, 53))
-    dark_palette.setColor(QPalette.WindowText, Qt.white)
-    dark_palette.setColor(QPalette.Base, QColor(25, 25, 25))
-    dark_palette.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
-    dark_palette.setColor(QPalette.ToolTipBase, Qt.white)
-    dark_palette.setColor(QPalette.ToolTipText, Qt.white)
-    dark_palette.setColor(QPalette.Text, Qt.white)
-    dark_palette.setColor(QPalette.Button, QColor(53, 53, 53))
-    dark_palette.setColor(QPalette.ButtonText, Qt.white)
-    dark_palette.setColor(QPalette.BrightText, Qt.red)
-    dark_palette.setColor(QPalette.Link, QColor(42, 130, 218))
-    dark_palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
-    dark_palette.setColor(QPalette.HighlightedText, Qt.black)
+    app.setStyle('Fusion')
+    dark_palette = QtGui.QPalette()
+
+    dark_palette.setColor(QtGui.QPalette.Window, QtGui.QColor(53, 53, 53))
+    dark_palette.setColor(QtGui.QPalette.WindowText, QtCore.Qt.white)
+    dark_palette.setColor(QtGui.QPalette.Base, QtGui.QColor(25, 25, 25))
+    dark_palette.setColor(QtGui.QPalette.AlternateBase, QtGui.QColor(53, 53, 53))
+    dark_palette.setColor(QtGui.QPalette.ToolTipBase, QtCore.Qt.white)
+    dark_palette.setColor(QtGui.QPalette.ToolTipText, QtCore.Qt.white)
+    dark_palette.setColor(QtGui.QPalette.Text, QtCore.Qt.white)
+    dark_palette.setColor(QtGui.QPalette.Button, QtGui.QColor(53, 53, 53))
+    dark_palette.setColor(QtGui.QPalette.ButtonText, QtCore.Qt.white)
+    dark_palette.setColor(QtGui.QPalette.BrightText, QtCore.Qt.red)
+    dark_palette.setColor(QtGui.QPalette.Link, QtGui.QColor(42, 130, 218))
+    dark_palette.setColor(QtGui.QPalette.Highlight, QtGui.QColor(42, 130, 218))
+    dark_palette.setColor(QtGui.QPalette.HighlightedText, QtCore.Qt.black)
 
     app.setPalette(dark_palette)
 
-    app.setStyleSheet("QToolTip { color: #ffffff; background-color: #2a82da; border: 1px solid white; }")'''
+    '''app.setStyleSheet("QToolTip { color: #ffffff; background-color: #2a82da; border: 1px solid white; }")'''
 
+    win = MyWindow()
+    win.show()
+    sys.exit(app.exec_())
 window()    
