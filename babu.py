@@ -8,47 +8,47 @@ import pandas as pd
 import io
 import requests
 
-class Window2(QMainWindow):                           # <===
+class Window2(QMainWindow):#class for window2 (pop up window)
     def __init__(self):
-        super().__init__()
+        super(Window2,self).__init__()
         self.setWindowTitle("check your data")
         self.setGeometry(400, 400, 330, 385)
+        self.iniUI()
+
+
+    def iniUI(self):#
         
         #self.window1 = MyWindow()
-        
-        #self.input_yes_no = QtWidgets.QLabel(self)
-        #self.input_yes_no.move(115, 50)
-        #self.input_yes_no.setText('-')
-        
-        self.input_flowcell = QtWidgets.QLabel(self)
-        #self.input_flowcell.setText('FLO-MIN106')
-        self.input_flowcell.move(115,50)
+       
         
 
-        self.label_flowcell = QtWidgets.QLabel(self)
-        self.label_flowcell.setText('sampel name:')
-        self.label_flowcell.move(20, 70)
+        self.label_sample = QtWidgets.QLabel(self)
+        self.label_sample.setText('sampel name:')
+        self.label_sample.move(20, 70)
         
         
         self.kitlabel = QtWidgets.QLabel(self)
         self.kitlabel.move(20, 10)
-        self.kitlabel.setText('Kit:')
+        self.kitlabel.setText('kit:')
 
         self.barlabel = QtWidgets.QLabel(self)
         self.barlabel.move(20, 30)
-        self.barlabel.setText('Barcoding Kit:')
+        self.barlabel.setText('barcoding kit:')
         
         self.barcodinglabel = QtWidgets.QLabel(self)
         self.barcodinglabel.move(20, 50)
-        self.barcodinglabel.setText('Barcode:')
+        self.barcodinglabel.setText('flowcell:')
         
-        self.input0 = QtWidgets.QLabel(self)
+        self.input0 = QtWidgets.QLabel(self)#kit
         self.input0.move(115, 10)
 
-        self.input00 = QtWidgets.QLabel(self)
+        self.input00 = QtWidgets.QLabel(self)#barcode
         self.input00.move(115, 30)
+
+        self.input000 = QtWidgets.QLabel(self)#flowcell
+        self.input000.move(115, 50)
         
-        self.input1 = QtWidgets.QLabel(self)
+        self.input1 = QtWidgets.QLabel(self)#samples 1-24
         self.input1.move(20, 90)
         self.label1 = QtWidgets.QLabel(self)
         self.label1.setText('1')
@@ -196,7 +196,7 @@ class Window2(QMainWindow):                           # <===
         self.button.setText('ok!')
         self.button.move(230, 355) 
         #self.button.clicked.connect(self.upload_activated)
-        self.button.clicked.connect(self.close)
+        self.button.clicked.connect(self.close)#close window2
 
 
     def hide2(self):#hide all labels from 2 to 12 
@@ -257,7 +257,7 @@ class Window2(QMainWindow):                           # <===
         self.label24.setHidden(True)
 
  
-    def displayInfo(self):
+    def displayInfo(self):#shows window2
         self.show( )
 
 
@@ -265,7 +265,7 @@ class Window2(QMainWindow):                           # <===
      #   self.window1.button_upload.setEnabled(True)
          
 
-class MyWindow(QMainWindow):
+class MyWindow(QMainWindow):#create a window through the initUI() method, and call it in the initialization method init()
     
     def __init__(self):
         super(MyWindow, self).__init__()
@@ -279,10 +279,12 @@ class MyWindow(QMainWindow):
 
     def iniUI(self):
 
-        self.window2 = Window2()
+    # 'self' is the first parameter of the methods of a class that refers to the instance of the same
+
+        self.window2 = Window2()#for initiating window2
         
 
-        self.label_kit = QtWidgets.QLabel(self)
+        self.label_kit = QtWidgets.QLabel(self)#creating label
         self.label_kit.setText('choose barcode')
         self.label_kit.move(45, 170)
 
@@ -291,8 +293,7 @@ class MyWindow(QMainWindow):
         self.combobox_kit.addItems(kits)
         self.combobox_kit.move(40,190)
         self.combobox_kit.currentTextChanged.connect(self.combchanged2)
-        #self.combobox_kit.view().setRowHidden(0, True)
-        #self.combobox_kit.activated.connect(self.showComboMessage)
+        self.combobox_kit.activated[str].connect(self.onChanged)
         
         self.qlabel = QtWidgets.QLabel(self)
         self.qlabel.setText('')
@@ -306,24 +307,16 @@ class MyWindow(QMainWindow):
         self.qlabel3.setText('')
         self.qlabel3.setHidden(True)
         
-        self.combobox_kit.activated[str].connect(self.onChanged) 
+         
 
-        self.combobox_bar = QtWidgets.QComboBox(self)
-        kits2 = ['Select kit','EXP-NBD104','NBD114','RPB004']
-        self.combobox_bar.addItems(kits2)
-        self.combobox_bar.move(40,275)
-        self.combobox_bar.view().setRowHidden(0, True)
-        self.combobox_bar.activated.connect(self.showComboMessage2)
-        self.combobox_bar.setDisabled(True)
-
-        self.combobox_bar.activated[str].connect(self.onChanged2)
+        
 
         self.label_barcode = QtWidgets.QLabel(self)
         self.label_barcode.setText('barcode?')
         self.label_barcode.move(47, 210)
 
         self.combobox_barcode = QtWidgets.QComboBox(self)
-        kits2 = ['choose barcode','FLO-MIN106']
+        kits2 = ['choose flowcell','FLO-MIN106']
         self.combobox_barcode.addItems(kits2)
         self.combobox_barcode.move(40, 305)
         self.combobox_barcode.adjustSize()
@@ -337,15 +330,14 @@ class MyWindow(QMainWindow):
         self.radiobutton_no = QtWidgets.QRadioButton(self)
         self.radiobutton_no.toggled.connect(self.radioclicked_no)
         self.radiobutton_no.move(45, 230)
-        #self.radiobutton_no.setChecked(True)
         self.label_radiobutton_no = QtWidgets.QLabel(self)
         self.label_radiobutton_no.setText('no')
         self.label_radiobutton_no.move(65, 230)
        
 
         self.textedit = QtWidgets.QTextEdit(self)
-        self.textedit.setGeometry(45, 350, 200, 150)
-        #self.textedit.setHidden(True)
+        self.textedit.setGeometry(40, 350, 200, 150)
+        
 
 
 
@@ -363,18 +355,6 @@ class MyWindow(QMainWindow):
 
     
 
-
-
-
-        '''self.label_samplename = QtWidgets.QLabel(self)
-        self.label_samplename.setText('insert sample name')
-        self.label_samplename.move(45, 265)
-        self.label_samplename.adjustSize()
-        
-
-        self.lineedit_samplename = QtWidgets.QLineEdit(self)
-        self.lineedit_samplename.move(45, 280)
-        self.lineedit_samplename.setGeometry(45, 280, 200, 30)'''
 
         self.label1 = QtWidgets.QLabel(self)
         self.label1.setText('1')
@@ -661,7 +641,7 @@ class MyWindow(QMainWindow):
         self.checkbox_95 = QtWidgets.QCheckBox("96-sample names",self)
         self.checkbox_95.adjustSize()
         self.checkbox_95.stateChanged.connect(self.clickbox2)
-        self.checkbox_95.move(120, 280)
+        self.checkbox_95.move(100, 280)
         self.checkbox_95.setDisabled(True)
         #self.checkbox.setHidden(True)
 
@@ -758,7 +738,7 @@ class MyWindow(QMainWindow):
 
         self.button_anwenden = QtWidgets.QPushButton(self)
         self.button_anwenden.setText('anwenden')
-        self.button_anwenden.move(60, 120)
+        self.button_anwenden.move(40, 120)
         self.button_anwenden.clicked.connect(self.anwenden)
 
         #self.button_reset = QtWidgets.QPushButton(self)
@@ -766,8 +746,13 @@ class MyWindow(QMainWindow):
         #self.button_reset.move(0, 110)
         #self.button_reset.clicked.connect(self.reset)
 
-        self.tablewidget = QtWidgets.QTableWidget(96,1,self)
+        nb_row = 96
+        nb_col = 1
+
+        self.tablewidget = QtWidgets.QTableWidget(self)
         #self.tablewidget.move(560, 20)
+        self.tablewidget.setRowCount(nb_row)
+        self.tablewidget.setColumnCount(nb_col)
         self.tablewidget.setGeometry(QtCore.QRect(570,20,140,560))
         self.tablewidget.setHorizontalHeaderLabels(["samples"])
         self.tablewidget.setHidden(True)
@@ -779,22 +764,121 @@ class MyWindow(QMainWindow):
         kitliste = ['Select Kit','SQK-PCB109','SQK-RNA002','SQK-PCS109','SQK-DCS109','SQK-CS9109','SQK-LSK109','SQK-LSK109-XL','SQK-16S024','SQK-LSK110',
         'SQK-LRK001','SQK-RBK004','SQK-PBK004','SQK-RAB204','SQK-RPB004','SQK-PSK004','SQK-RAD004']
         self.list_kits.addItems(kitliste)
-        self.list_kits.move(60,140)
+        self.list_kits.move(40,150)
         self.list_kits.currentTextChanged.connect(self.combchanged)
         
+        self.labelupload = QtWidgets.QLabel(self)
+        self.labelupload.setText('')
+        self.labelupload.setHidden(True)
 
 
+    def upload(self, state):
+        demo = open('bible.txt', 'w')
+
+        kit = self.list_kits.currentText()
+        barcodekit = self.combobox_kit.currentText()
+        flowcell = self.combobox_barcode.currentText()
+
+        demo.write('Kit#')
+        demo.write(kit)
+        demo.write('\n')
+
+        demo.write('Barcodekit#')
+        demo.write(barcodekit)
+        demo.write('\n')
+
+        demo.write('Flowcell#')
+        demo.write(flowcell)
+        demo.write('\n')
         
         
-
-
-    def upload(self):
-        print('coconut')
-        lineedit01 = self.lineedit1.text()
-        barcodingkit = self.combobox_kit.currentText()
-        print(lineedit01)
-        print(barcodingkit)
         
+        label_yes_no = self.labelupload.text()
+        
+        if label_yes_no == 'no':
+            lineedit01 = self.lineedit1.text()
+            demo.write('NB01#')
+            demo.write(lineedit01)
+            
+        
+        
+        if label_yes_no == 'yes':
+            checkbox_24 = self.checkbox.checkState()
+            if checkbox_24 == 2:
+                lineedit13 = self.lineedit13.text()
+                lineedit14 = self.lineedit14.text()
+                lineedit15 = self.lineedit15.text()
+                lineedit16 = self.lineedit16.text()
+                lineedit17 = self.lineedit17.text()
+                lineedit18 = self.lineedit18.text()
+                lineedit19 = self.lineedit19.text()
+                lineedit20 = self.lineedit20.text()
+                lineedit21 = self.lineedit21.text()
+                lineedit22 = self.lineedit22.text()
+                lineedit23 = self.lineedit23.text()
+                lineedit24 = self.lineedit24.text()
+
+                liste = [lineedit13,lineedit14,lineedit15,lineedit16,lineedit17,lineedit18,lineedit19,lineedit20,
+                lineedit21,lineedit22,lineedit23,lineedit24]
+
+                a = 13
+                for i in range(0,12):
+                    demo.write('NB0')
+                    demo.write(str(a))
+                    demo.write('#')
+                    demo.write(liste[i])
+                    print(liste[i])
+                    demo.write('\n')
+                    a = a + 1
+            else:
+                lineedit01 = self.lineedit1.text()
+                lineedit02 = self.lineedit2.text()
+                lineedit03 = self.lineedit3.text()
+                lineedit04 = self.lineedit4.text()
+                lineedit05 = self.lineedit5.text()
+                lineedit06 = self.lineedit6.text()
+                lineedit07 = self.lineedit7.text()
+                lineedit08 = self.lineedit8.text()
+                lineedit09 = self.lineedit9.text()
+                lineedit10 = self.lineedit10.text()
+                lineedit11 = self.lineedit11.text()
+                lineedit12 = self.lineedit12.text()
+                liste = [lineedit01,lineedit02,lineedit03,lineedit04,lineedit05,lineedit06,lineedit07,lineedit08,
+                lineedit09,lineedit10,lineedit11,lineedit12]
+                a = 1
+                for i in range(0,12):
+                    if a<10:
+                        demo.write('NB0')
+                        demo.write(str(a))
+                        demo.write('#')
+                        demo.write(liste[i])
+                        demo.write('\n')
+                        a = a + 1
+                    else:
+                        demo.write('NB')
+                        demo.write(str(a))
+                        demo.write('#')
+                        demo.write(liste[i])
+                        demo.write('\n')
+                        a = a + 1
+            
+        
+        
+        '''nb_row = 96
+        nb_col = 1
+
+        for row in range (nb_row):
+            for col in range(nb_col):
+                print(self.tablewidget.item(row, col).text())
+        #tablewidget = self.tablewidget.currentItem().row(1).column(0)
+        #tablewidget = self.tablewidget.itemAt(0,0).text()
+        #tablewidget = self.tablewidget.item(self.row,col).text()
+        #print(tablewidget)'''
+
+
+        #/n zeilenumbruch
+        demo.close()
+ 
     # 01100001 01101110 01101111 01110101 01101011
 
     #def reset(self):
@@ -975,8 +1059,8 @@ class MyWindow(QMainWindow):
         self.qlabel.setText(text)
     
     
-    def onChanged2(self, text):
-        self.qlabel2.setText(text)
+    '''def onChanged2(self, text):
+        self.qlabel2.setText(text)'''
     
     
     def onChanged3(self, text):
@@ -1002,8 +1086,8 @@ class MyWindow(QMainWindow):
 
         self.window2.hide()
         self.window2.hide2()
-
-        self.combobox_bar.setDisabled(True)
+        self.labelupload.setText('no')
+        #self.combobox_bar.setDisabled(True)
         self.label_barcode_yes_no.setText('no')
         self.checkbox.setChecked(False)
         self.checkbox.setDisabled(True)
@@ -1044,9 +1128,10 @@ class MyWindow(QMainWindow):
 
     def radioclicked_yes(self):
 
+        self.window2.hide()
         self.window2.unhide2()
-
-        self.combobox_bar.setDisabled(False)
+        self.labelupload.setText('yes')
+        #self.combobox_bar.setDisabled(False)
         self.label_barcode_yes_no.setText('yes')
         self.checkbox.setDisabled(False)
         self.checkbox_95.setDisabled(False)
@@ -1193,10 +1278,9 @@ class MyWindow(QMainWindow):
 
     def passinInformation(self):
         
-        self.window2.input_flowcell.setText(self.qlabel3.text())
-        #self.window2.input_yes_no.setText(self.label_barcode_yes_no.text())
-        self.window2.input0.setText(self.qlabel.text())
-        self.window2.input00.setText(self.qlabel2.text())
+        self.window2.input000.setText(self.combobox_barcode.currentText())
+        self.window2.input0.setText(self.list_kits.currentText())
+        self.window2.input00.setText(self.combobox_kit.currentText())
         self.window2.input1.setText(self.lineedit1.text())
         self.window2.input3.setText(self.lineedit3.text())
         self.window2.input2.setText(self.lineedit2.text())
