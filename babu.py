@@ -1,7 +1,7 @@
 import sys
 print(sys.path)
 from PyQt5 import QtWidgets, QtCore, QtGui
-from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QApplication, QMainWindow,QInputDialog,  QFileDialog
 from PyQt5.QtGui import QPalette, QColor
 from PyQt5.QtCore import Qt
 import pandas as pd
@@ -773,7 +773,27 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
 
 
     def upload(self, state):
-        demo = open('bible.txt', 'w')
+        '''dialog = QFileDialog()
+        foo_dir = dialog.getExistingDirectory(self, 'Select an  directory')
+        print(foo_dir)
+
+        import os.path
+
+        save_path = foo_dir
+
+        name_of_file = 'run_info' #raw_input("What is the name of the file: ")
+
+        completeName = os.path.join(save_path, name_of_file+".txt")    '''  
+        completeName = 'run.txt'   
+
+        demo = open(completeName, "w")
+
+        
+
+
+
+        
+        
 
         kit = self.list_kits.currentText()
         barcodekit = self.combobox_kit.currentText()
@@ -804,6 +824,9 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
         
         if label_yes_no == 'yes':
             checkbox_24 = self.checkbox.checkState()
+            checkbox_95 = self.checkbox.checkState()
+            print(checkbox_24)
+            print(checkbox_95)
             if checkbox_24 == 2:
                 lineedit13 = self.lineedit13.text()
                 lineedit14 = self.lineedit14.text()
@@ -831,6 +854,9 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
                     demo.write('\n')
                     a = a + 1
             else:
+                print('hjk')        
+            if checkbox_24 == 0 and checkbox_95 == 0:
+                
                 lineedit01 = self.lineedit1.text()
                 lineedit02 = self.lineedit2.text()
                 lineedit03 = self.lineedit3.text()
@@ -862,18 +888,21 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
                         demo.write('\n')
                         a = a + 1
             
-        
-        
-        '''nb_row = 96
-        nb_col = 1
+            if checkbox_95 == 2: 
+                nb_row = 96
+                nb_col = 1
 
-        for row in range (nb_row):
-            for col in range(nb_col):
-                print(self.tablewidget.item(row, col).text())
+                for row in range (nb_row):
+                    for col in range(nb_col):
+                        print(self.tablewidget.item(row, col).text())
+
+        
+        
+        
         #tablewidget = self.tablewidget.currentItem().row(1).column(0)
         #tablewidget = self.tablewidget.itemAt(0,0).text()
         #tablewidget = self.tablewidget.item(self.row,col).text()
-        #print(tablewidget)'''
+        #print(tablewidget)
 
 
         #/n zeilenumbruch
