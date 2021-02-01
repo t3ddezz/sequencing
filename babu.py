@@ -773,28 +773,22 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
 
 
     def upload(self, state):
-        '''dialog = QFileDialog()
-        foo_dir = dialog.getExistingDirectory(self, 'Select an  directory')
-        print(foo_dir)
+        dialog = QFileDialog()
+        direc = dialog.getExistingDirectory(self, 'Select an  directory')
+        print(direc)
 
         import os.path
 
-        save_path = foo_dir
+        save_path = direc
 
-        name_of_file = 'run_info' #raw_input("What is the name of the file: ")
+        name_of_file = 'run_info' 
 
-        completeName = os.path.join(save_path, name_of_file+".txt")    '''  
-        completeName = 'run.txt'   
+        completeName = os.path.join(save_path, name_of_file + ".txt")    
+           
 
         demo = open(completeName, "w")
 
         
-
-
-
-        
-        
-
         kit = self.list_kits.currentText()
         barcodekit = self.combobox_kit.currentText()
         flowcell = self.combobox_barcode.currentText()
@@ -824,9 +818,8 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
         
         if label_yes_no == 'yes':
             checkbox_24 = self.checkbox.checkState()
-            checkbox_95 = self.checkbox.checkState()
-            print(checkbox_24)
-            print(checkbox_95)
+            checkbox_95 = self.checkbox_95.checkState()
+            
             if checkbox_24 == 2:
                 lineedit13 = self.lineedit13.text()
                 lineedit14 = self.lineedit14.text()
@@ -850,11 +843,8 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
                     demo.write(str(a))
                     demo.write('#')
                     demo.write(liste[i])
-                    print(liste[i])
                     demo.write('\n')
-                    a = a + 1
-            else:
-                print('hjk')        
+                    a = a + 1       
             if checkbox_24 == 0 and checkbox_95 == 0:
                 
                 lineedit01 = self.lineedit1.text()
@@ -889,12 +879,47 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
                         a = a + 1
             
             if checkbox_95 == 2: 
-                nb_row = 96
-                nb_col = 1
-
-                for row in range (nb_row):
-                    for col in range(nb_col):
-                        print(self.tablewidget.item(row, col).text())
+                ku = 0
+                ka = 0
+                kl = 0
+                counter = 1
+                
+                rows  =  self.tablewidget.rowCount()
+                list_96 = []
+                for i in range(rows):
+                    table = self.tablewidget.item(i, 0)
+                    if table:
+                        if table.text():
+                            ku = '#'
+                            ke = str(counter)
+                            ka = table.text()
+                            kl =  ka + ku + ke
+                            list_96.append(ka)
+                            counter = counter + 1
+                        else:
+                            counter = counter + 1
+                            list_96.append('no sample')
+                    else:
+                        counter = counter + 1
+                        list_96.append('no sample')
+                a = 1
+                for i in range(rows):
+                    if a<10:
+                        demo.write('NB0')
+                        demo.write(str(a))
+                        demo.write('#')
+                        demo.write(list_96[i])
+                        demo.write('\n')
+                        a = a + 1
+                    else:
+                        demo.write('NB')
+                        demo.write(str(a))
+                        demo.write('#')
+                        demo.write(list_96[i])
+                        demo.write('\n')
+                        a = a + 1
+                    
+                
 
         
         
@@ -950,7 +975,7 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
             self.lineedit10.setHidden(True)
             self.lineedit11.setHidden(True)
             self.lineedit12.setHidden(True)
-        if n == 'EXP-PBC001' or n == 'EXP-NBD104':
+        if n == 'EXP-PBC001' or n == 'EXP-NBD104' or n == 'SQK-RPB004':
             self.radiobutton_yes.setChecked(True)
             self.checkbox_95.setChecked(False)
             self.checkbox.setChecked(False)
