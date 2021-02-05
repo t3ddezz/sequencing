@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 import sys
 print(sys.path)
 from PyQt5 import QtWidgets, QtCore, QtGui
@@ -7,6 +8,7 @@ from PyQt5.QtCore import Qt
 import pandas as pd
 import io
 import requests
+import os.path
 
 class Window2(QMainWindow):#class for window2 (pop up window)
     def __init__(self):
@@ -21,6 +23,8 @@ class Window2(QMainWindow):#class for window2 (pop up window)
         #self.window1 = MyWindow()
        
         
+
+        self.tablewidget = QtWidgets.QTableWidget
 
         self.label_sample = QtWidgets.QLabel(self)
         self.label_sample.setText('sampel name:')
@@ -273,7 +277,7 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
         #self.secondwindow = Window2()
         self.setGeometry(200, 200, 800, 600)
         self.setWindowTitle('Tool summary')
-        self.iniUI()
+        self.iniUI()#function call
 
     
 
@@ -291,11 +295,11 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
         self.combobox_kit = QtWidgets.QComboBox(self)
         kits = ['no barcode','EXP-PBC096','EXP-PBC001','EXP-NBD114','EXP-NBD104','EXP-NBD196']
         self.combobox_kit.addItems(kits)
-        self.combobox_kit.move(40,190)
-        self.combobox_kit.currentTextChanged.connect(self.combchanged2)
-        self.combobox_kit.activated[str].connect(self.onChanged)
+        self.combobox_kit.move(40,190)#position in window (x,y)
+        self.combobox_kit.currentTextChanged.connect(self.combchanged2)#connect combobox to function
         
-        self.qlabel = QtWidgets.QLabel(self)
+        
+        self.qlabel = QtWidgets.QLabel(self) #labels without any further function
         self.qlabel.setText('')
         self.qlabel.setHidden(True)
 
@@ -323,11 +327,11 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
         self.combobox_barcode.view().setRowHidden(0, True)
         self.combobox_barcode.activated.connect(self.showComboMessage3)
         
-        self.combobox_barcode.activated[str].connect(self.onChanged3)
+        self.combobox_barcode.activated[str].connect(self.onChanged3)#function to hide first index of list
     
         
         
-        self.radiobutton_no = QtWidgets.QRadioButton(self)
+        self.radiobutton_no = QtWidgets.QRadioButton(self)# round button (gruoped with radiobutton_yes)- only one can be selected
         self.radiobutton_no.toggled.connect(self.radioclicked_no)
         self.radiobutton_no.move(45, 230)
         self.label_radiobutton_no = QtWidgets.QLabel(self)
@@ -335,7 +339,7 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
         self.label_radiobutton_no.move(65, 230)
        
 
-        self.textedit = QtWidgets.QTextEdit(self)
+        self.textedit = QtWidgets.QTextEdit(self)#little edit field to add additional info
         self.textedit.setGeometry(40, 350, 200, 150)
         
 
@@ -356,7 +360,7 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
     
 
 
-        self.label1 = QtWidgets.QLabel(self)
+        self.label1 = QtWidgets.QLabel(self)# labels for lineedits for the samples
         self.label1.setText('1')
         self.label1.move(275, 20)
         self.lineedit1 = QtWidgets.QLineEdit(self)
@@ -579,14 +583,14 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
 
         
 
-        self.button_checkdata = QtWidgets.QPushButton(self)
+        self.button_checkdata = QtWidgets.QPushButton(self)#button to insepct data
         self.button_checkdata.setText('check data')
         self.button_checkdata.move(40, 510)
         #self.button_checkdata.clicked.connect(self.clicked)
         #self.button_checkdata.clicked.connect(self.window2)
         #self.button_checkdata.clicked.connect(self.uplaod)
         #self.button_checkdata.clicked.connect(self.passinginfo)
-        self.button_checkdata.clicked.connect(self.passinInformation)
+        self.button_checkdata.clicked.connect(self.passinInformation)#function to open another window
 
 
         '''self.combobox_dna = QtWidgets.QComboBox(self)
@@ -643,11 +647,10 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
         self.checkbox_95.stateChanged.connect(self.clickbox2)
         self.checkbox_95.move(100, 280)
         self.checkbox_95.setDisabled(True)
-        #self.checkbox.setHidden(True)
+        
 
 
-        #self.dna_button = QtWidgets.QRadioButton(self)
-        #self.dna_button.move(20,20)
+        
         self.label_dna = QtWidgets.QLabel(self)
         self.label_dna.setText('DNA')
         self.label_dna.move(40,20)
@@ -656,15 +659,12 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
         self.samplytype_label.setText('sample types')
         self.samplytype_label.move(33,3)
 
-        #self.dna_button.setChecked(True)
-        #self.rna_button = QtWidgets.QRadioButton(self)
-        #self.rna_button.move(80,20)
+        
         self.label_rna = QtWidgets.QLabel(self)
         self.label_rna.setText('RNA')
         self.label_rna.move(100,20)
 
-        #self.pcr_button = QtWidgets.QRadioButton(self)
-        #self.pcr_button.move(20,50)
+        
         self.label_pcr = QtWidgets.QLabel(self)
         self.label_pcr.setText('PCR')
         self.label_pcr.move(40,50)
@@ -673,14 +673,12 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
         self.pcr_label.setText('PCR')
         self.pcr_label.move(55,36)
 
-        #self.pcr_free_button = QtWidgets.QRadioButton(self)
-        #self.pcr_free_button.move(80,50)
+        
         self.label_pcr_free = QtWidgets.QLabel(self)
         self.label_pcr_free.setText('PCR-FREE')
         self.label_pcr_free.move(100,50)
 
-        #self.yes_button = QtWidgets.QRadioButton(self)
-        #self.yes_button.move(20,88)
+        
         self.label_yes = QtWidgets.QLabel(self)
         self.label_yes.setText('yes')
         self.label_yes.move(40,88)
@@ -689,16 +687,12 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
         self.label_multiplexing.setText('Multiplexing?')
         self.label_multiplexing.move(33,70)
 
-        #self.no_button = QtWidgets.QRadioButton(self)
-        #self.no_button.move(80,88)
+       
         self.label_no = QtWidgets.QLabel(self)
         self.label_no.setText('no')
         self.label_no.move(100,88)
 
-        #self.reset_button = QtWidgets.QPushButton(self)
-        #self.reset_button.setText('clear filter')
-        #self.reset_button.clicked.connect(self.reset)
-
+        
         self.dna_checkbox = QtWidgets.QCheckBox(self)
         self.dna_checkbox.move(20,20)
         self.dna_checkbox.stateChanged.connect(self.clickbox_dna)
@@ -723,44 +717,30 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
         self.no_checkbox.move(80, 88)
         self.no_checkbox.stateChanged.connect(self.clickbox_no)
         
-        #self.btngroup1 = QtWidgets.QButtonGroup(self)
-        #self.btngroup1.addButton(self.dna_button)
-        #self.btngroup1.addButton(self.rna_button)
-        #self.btngroup2 = QtWidgets.QButtonGroup(self)
-        #self.btngroup2.addButton(self.radiobutton_no)
-        #self.btngroup2.addButton(self.radiobutton_yes)
-        #self.btngroup3 = QtWidgets.QButtonGroup(self)
-        #self.btngroup3.addButton(self.pcr_button)
-        #self.btngroup3.addButton(self.pcr_free_button)
-        #self.btngroup4 = QtWidgets.QButtonGroup(self)
-        #self.btngroup4.addButton(self.no_button)
-        #self.btngroup4.addButton(self.yes_button)
+        
 
         self.button_anwenden = QtWidgets.QPushButton(self)
         self.button_anwenden.setText('anwenden')
         self.button_anwenden.move(40, 120)
         self.button_anwenden.clicked.connect(self.anwenden)
 
-        #self.button_reset = QtWidgets.QPushButton(self)
-        #self.button_reset.setText('reset')
-        #self.button_reset.move(0, 110)
-        #self.button_reset.clicked.connect(self.reset)
+        
 
         nb_row = 96
         nb_col = 1
 
-        self.tablewidget = QtWidgets.QTableWidget(self)
-        #self.tablewidget.move(560, 20)
+        self.tablewidget = QtWidgets.QTableWidget(self)#table for 96 samples
+        
         self.tablewidget.setRowCount(nb_row)
         self.tablewidget.setColumnCount(nb_col)
         self.tablewidget.setGeometry(QtCore.QRect(570,20,140,560))
         self.tablewidget.setHorizontalHeaderLabels(["samples"])
         self.tablewidget.setHidden(True)
-        #self.tablewdiget.setItem(1,1,)
+        
 
         
 
-        self.list_kits = QtWidgets.QComboBox(self)
+        self.list_kits = QtWidgets.QComboBox(self)#all current sequencing kits
         kitliste = ['Select Kit','SQK-PCB109','SQK-RNA002','SQK-PCS109','SQK-DCS109','SQK-CS9109','SQK-LSK109','SQK-LSK109-XL','SQK-16S024','SQK-LSK110',
         'SQK-LRK001','SQK-RBK004','SQK-PBK004','SQK-RAB204','SQK-RPB004','SQK-PSK004','SQK-RAD004']
         self.list_kits.addItems(kitliste)
@@ -772,13 +752,10 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
         self.labelupload.setHidden(True)
 
 
-    def upload(self, state):
+    def upload(self, state):#function to upload files and create run_info.txt
         dialog = QFileDialog()
         direc = dialog.getExistingDirectory(self, 'Select an  directory')
-        print(direc)
-
-        import os.path
-
+        
         save_path = direc
 
         name_of_file = 'run_info' 
@@ -788,7 +765,6 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
 
         demo = open(completeName, "w")
 
-        
         kit = self.list_kits.currentText()
         barcodekit = self.combobox_kit.currentText()
         flowcell = self.combobox_barcode.currentText()
@@ -898,10 +874,10 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
                             counter = counter + 1
                         else:
                             counter = counter + 1
-                            list_96.append('no sample')
+                            list_96.append('')
                     else:
                         counter = counter + 1
-                        list_96.append('no sample')
+                        list_96.append('')
                 a = 1
                 for i in range(rows):
                     if a<10:
@@ -933,17 +909,8 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
         #/n zeilenumbruch
         demo.close()
  
-    # 01100001 01101110 01101111 01110101 01101011
 
-    #def reset(self):
-     #   self.rna_checkbox.setChecked(False)
-      #  self.dna_checkbox.setChecked(False)
-       # self.pcr_checkbox.setChecked(False)
-        #self.pcr_free_checkbox.setChecked(False)
-        #self.yes_checkbox.setChecked(False)
-        #self.no_checkbox.setChecked(False)
-
-    def combchanged2(self, value):
+    def combchanged2(self, value):#function for barcoding kits to sleect number of samples automatic
         n = value
         if n == 'no barcode':
             self.radiobutton_no.setChecked(True)
@@ -1033,7 +1000,7 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
             self.lineedit12.setHidden(True)
 
     
-    def combchanged(self, value):
+    def combchanged(self, value):#function to choose automatic which barcode could be used after selcting a seuqencing kit
         n = value
 
         kits = ['no barcode','EXP-PBC096','EXP-PBC001','EXP-NBD114','EXP-NBD104','EXP-NBD196']        
@@ -1079,7 +1046,7 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
                 break
         
         
-    def clickbox_dna(self, state):
+    def clickbox_dna(self, state):#functions for the filter
         if state == QtCore.Qt.Checked:
             self.rna_checkbox.setChecked(False)
     
@@ -1103,30 +1070,14 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
         if state == QtCore.Qt.Checked:
             self.no_checkbox.setChecked(False)   
 
-    '''def reset(self):
-        self.btngroup4.setExclusive(False)
-        self.no_button.setChecked(False)
-        self.yes_button.setChecked(False)
-        self.btngroup4.setExclusive(True)'''
-
-    def onChanged(self, text):
-        self.qlabel.setText(text)
-    
-    
-    '''def onChanged2(self, text):
-        self.qlabel2.setText(text)'''
-    
-    
     def onChanged3(self, text):
         self.qlabel3.setText(text)
 
    
-    '''def showComboMessage(self, index=-1, enable=False):
-        if index:
-            self.combobox_kit.model().item(0).setEnabled(enable)'''
+
    
    
-    def showComboMessage2(self, index=-1, enable=False):
+    def showComboMessage2(self, index=-1, enable=False):#function to hide first index in a list
         if index:
             self.combobox_bar.model().item(0).setEnabled(enable)
     
@@ -1136,7 +1087,7 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
             self.combobox_barcode.model().item(0).setEnabled(enable)
 
    
-    def radioclicked_no(self): 
+    def radioclicked_no(self):# 
 
         self.window2.hide()
         self.window2.hide2()
@@ -1174,10 +1125,7 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
         self.lineedit10.setHidden(True)
         self.lineedit11.setHidden(True)
         self.lineedit12.setHidden(True)
-
-
-    #def uplaod(self):
-        #self.button_upload.setEnabled(True)
+ 
 
 
     def radioclicked_yes(self):
@@ -1686,30 +1634,13 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
         
 
 
-    '''def window2(self):                                             # <===
-        self.w = Window2()
-        self.w.show()'''
+   
         
 
 def window():
     app = QApplication(sys.argv)
     
-    '''app.setStyle('Fusion')
-    palette = QtGui.QPalette()
-    palette.setColor(QtGui.QPalette.Window, QtGui.QColor(53,53,53))
-    palette.setColor(QtGui.QPalette.WindowText, QtCore.Qt.white)
-    palette.setColor(QtGui.QPalette.Base, QtGui.QColor(15,15,15))
-    palette.setColor(QtGui.QPalette.AlternateBase, QtGui.QColor(53,53,53))
-    palette.setColor(QtGui.QPalette.ToolTipBase, QtCore.Qt.white)
-    palette.setColor(QtGui.QPalette.ToolTipText, QtCore.Qt.white)
-    palette.setColor(QtGui.QPalette.Text, QtCore.Qt.white)
-    palette.setColor(QtGui.QPalette.Button, QtGui.QColor(53,53,53))
-    palette.setColor(QtGui.QPalette.ButtonText, QtCore.Qt.white)
-    palette.setColor(QtGui.QPalette.BrightText, QtCore.Qt.red)
-         
-    palette.setColor(QtGui.QPalette.Highlight, QtGui.QColor(142,45,197).lighter())
-    palette.setColor(QtGui.QPalette.HighlightedText, QtCore.Qt.black)
-    app.setPalette(palette)'''
+    
 
 
     app.setStyle('Fusion')
@@ -1730,8 +1661,6 @@ def window():
     dark_palette.setColor(QtGui.QPalette.HighlightedText, QtCore.Qt.black)
 
     app.setPalette(dark_palette)
-
-    '''app.setStyleSheet("QToolTip { color: #ffffff; background-color: #2a82da; border: 1px solid white; }")'''
 
     win = MyWindow()
     win.show()
