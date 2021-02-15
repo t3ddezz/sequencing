@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 import sys
+import sys ; sys.setrecursionlimit(sys.getrecursionlimit() * 5)
 print(sys.path)
 from PyQt5 import QtWidgets, QtCore, QtGui
 from PyQt5.QtWidgets import QApplication, QMainWindow,QInputDialog,  QFileDialog
@@ -290,12 +291,12 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
 
         self.label_kit = QtWidgets.QLabel(self)#creating label
         self.label_kit.setText('choose barcode')
-        self.label_kit.move(45, 170)
+        self.label_kit.move(43, 190)
 
         self.combobox_kit = QtWidgets.QComboBox(self)
         kits = ['no barcode','EXP-PBC096','EXP-PBC001','EXP-NBD114','EXP-NBD104','EXP-NBD196']
         self.combobox_kit.addItems(kits)
-        self.combobox_kit.move(40,190)#position in window (x,y)
+        self.combobox_kit.move(40,215)#position in window (x,y)
         self.combobox_kit.currentTextChanged.connect(self.combchanged2)#connect combobox to function
         
         
@@ -316,13 +317,14 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
         
 
         self.label_barcode = QtWidgets.QLabel(self)
-        self.label_barcode.setText('barcode?')
-        self.label_barcode.move(47, 210)
+        self.label_barcode.setText('more then one sample?')
+        self.label_barcode.move(45, 260)
+        self.label_barcode.adjustSize()
 
         self.combobox_barcode = QtWidgets.QComboBox(self)
         kits2 = ['choose flowcell','FLO-MIN106']
         self.combobox_barcode.addItems(kits2)
-        self.combobox_barcode.move(40, 305)
+        self.combobox_barcode.move(40, 350)
         self.combobox_barcode.adjustSize()
         self.combobox_barcode.view().setRowHidden(0, True)
         self.combobox_barcode.activated.connect(self.showComboMessage3)
@@ -333,25 +335,28 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
         
         self.radiobutton_no = QtWidgets.QRadioButton(self)# round button (gruoped with radiobutton_yes)- only one can be selected
         self.radiobutton_no.toggled.connect(self.radioclicked_no)
-        self.radiobutton_no.move(45, 230)
+        self.radiobutton_no.move(45, 270)
         self.label_radiobutton_no = QtWidgets.QLabel(self)
         self.label_radiobutton_no.setText('no')
-        self.label_radiobutton_no.move(65, 230)
+        self.label_radiobutton_no.move(65, 270)
        
 
+        self.label_textedit = QtWidgets.QLabel(self)
+        self.label_textedit.setText('add additional informations')
+        self.label_textedit.move(292, 410)
+        self.label_textedit.adjustSize()
         self.textedit = QtWidgets.QTextEdit(self)#little edit field to add additional info
-        self.textedit.setGeometry(40, 350, 200, 150)
+        self.textedit.setGeometry(290, 430, 200, 150)
         
 
 
 
         self.radiobutton_yes = QtWidgets.QRadioButton(self)
         self.radiobutton_yes.toggled.connect(self.radioclicked_yes)
-        self.radiobutton_yes.move(100, 230)
-        
+        self.radiobutton_yes.move(100, 270)
         self.label_radiobutton_yes = QtWidgets.QLabel(self)
         self.label_radiobutton_yes.setText('yes')
-        self.label_radiobutton_yes.move(120, 230)
+        self.label_radiobutton_yes.move(120, 270)
         
         
         self.label_barcode_yes_no = QtWidgets.QLabel(self)
@@ -639,13 +644,13 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
         self.checkbox = QtWidgets.QCheckBox("24-sample names",self)
         self.checkbox.adjustSize()
         self.checkbox.stateChanged.connect(self.clickbox)
-        self.checkbox.move(100, 255)
+        self.checkbox.move(100, 295)
         self.checkbox.setDisabled(True)
 
         self.checkbox_95 = QtWidgets.QCheckBox("96-sample names",self)
         self.checkbox_95.adjustSize()
         self.checkbox_95.stateChanged.connect(self.clickbox2)
-        self.checkbox_95.move(100, 280)
+        self.checkbox_95.move(100, 320)
         self.checkbox_95.setDisabled(True)
         
 
@@ -720,7 +725,7 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
         
 
         self.button_anwenden = QtWidgets.QPushButton(self)
-        self.button_anwenden.setText('anwenden')
+        self.button_anwenden.setText('use filter')
         self.button_anwenden.move(40, 120)
         self.button_anwenden.clicked.connect(self.anwenden)
 
@@ -744,7 +749,7 @@ class MyWindow(QMainWindow):#create a window through the initUI() method, and ca
         kitliste = ['Select Kit','SQK-PCB109','SQK-RNA002','SQK-PCS109','SQK-DCS109','SQK-CS9109','SQK-LSK109','SQK-LSK109-XL','SQK-16S024','SQK-LSK110',
         'SQK-LRK001','SQK-RBK004','SQK-PBK004','SQK-RAB204','SQK-RPB004','SQK-PSK004','SQK-RAD004']
         self.list_kits.addItems(kitliste)
-        self.list_kits.move(40,150)
+        self.list_kits.move(40,160)
         self.list_kits.currentTextChanged.connect(self.combchanged)
         
         self.labelupload = QtWidgets.QLabel(self)
